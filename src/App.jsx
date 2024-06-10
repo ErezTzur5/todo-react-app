@@ -3,6 +3,7 @@ import './App.css';
 import TodoList from './components/TodoList';
 import TodoStatistics from './components/TodoStatistics';
 import AddTodoForm from './components/AddTodoForm';
+import axios from 'axios';
 
 function makeId(length) {
   let result = "";
@@ -14,32 +15,43 @@ function makeId(length) {
   return result;
 }
 
-const data = [
-  { id: '1', title: 'Learn React', isComplete: false },
-  { id: '2', title: 'Build a Todo App', isComplete: false },
-  { id: '3', title: 'Read JavaScript Documentation', isComplete: true },
-  { id: '4', title: 'Write Unit Tests', isComplete: false },
-  { id: '5', title: 'Implement Context', isComplete: true },
-  { id: '6', title: 'Create Portfolio Website', isComplete: false },
-  { id: '7', title: 'Learn TypeScript', isComplete: false },
-  { id: '8', title: 'Refactor Codebase', isComplete: true },
-  { id: '9', title: 'Optimize Performance', isComplete: false },
-  { id: '10', title: 'Deploy to Production', isComplete: true },
-];
-
 function App() {
-  const [todos, setTodos] = useState(data);
+  const [todos, setTodos] = useState([]);
 
-  function removeTodo(todoId) {
-    const newTodos = todos.filter((todo) => todo.id !== todoId);
-    setTodos(newTodos);
+  useEffect(() => {
+    axios.get('http://localhost:8001/todos')
+      .then(response => {
+        setTodos(response.data);
+        
+      })
+      .catch(error => {
+        console.error('Error fetching data: ', error);
+      });
+  }, []);
+
+  async function removeTodo(todoId) {
+    try {
+      await axios.delete(`http://localhost:8001/todos/${todoId}`);
+  
+      const newTodos = todos.filter((todo) => todo.id !== todoId);
+      setTodos(newTodos);
+      console.log('after remove: ', newTodos);
+    } catch (error) {
+      console.error('Error deleting todo:', error);
+    }
   }
 
-  function toggleComplete(todoId) {
-    const checkedTodos = todos.map((todo) =>
-      todo.id === todoId ? { ...todo, isComplete: !todo.isComplete } : todo
-    );
-    setTodos(checkedTodos);
+  async function toggleComplete(todoId) {
+    try{
+
+      const checkedTodos = todos.map((todo) =>
+        todo.id === todoId ? { ...todo, isComplete: !todo.isComplete } : todo
+      );
+      await axios.put(`http://localhost:8001/todos/${todoId}`, checkedTodos);
+      setTodos(checkedTodos);
+    } catch (error){
+      console.log("Error updating todo", error);
+    }
   }
 
   function addTodo(title) {
@@ -51,7 +63,7 @@ function App() {
 
     const newTodos = [...todos];
     newTodos.push(newTodo);
-
+    console.log('after add: ',newTodos);
     setTodos(newTodos);
   }
 
@@ -69,15 +81,7 @@ function App() {
     }
     return (countCompletedTodos() / todos.length) * 100;
   }
-  useEffect(() => {
-    
-    const greetUser = () => {
-      console.log('Welcome to the app!');
-    };
 
-    greetUser();
-  }, []); 
-  
   return (
     <div className="main-container">
       <h1>Cat App</h1>

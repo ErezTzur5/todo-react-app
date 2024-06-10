@@ -1,0 +1,63 @@
+{
+  "todos": [
+    {
+      "id": "1",
+      "title": "Read JavaScript Documentation",
+      "isComplete": true
+    },
+    {
+      "id": "2",
+      "title": "Write Unit Tests",
+      "isComplete": true
+    },
+    {
+      "id": "3",
+      "title": "Implement Context",
+      "isComplete": true
+    },
+    {
+      "id": "4",
+      "title": "Create Portfolio Website",
+      "isComplete": false
+    },
+    {
+      "id": "5",
+      "title": "Learn TypeScript",
+      "isComplete": false
+    },
+    {
+      "id": "6",
+      "title": "Refactor Codebase",
+      "isComplete": true
+    },
+    {
+      "id": "7",
+      "title": "Optimize Performance",
+      "isComplete": false
+    },
+    {
+      "id": "8",
+      "title": "Deploy to Production",
+      "isComplete": true
+    },
+    {
+      "id": "10",
+      "title": "rrrr",
+      "isComplete": false
+    },
+    {
+      "id": "3690",
+      "title": "erez",
+      "isComplete": false
+    },
+    {
+      "id": "63cb",
+      "title": "erez",
+      "isComplete": false
+    },
+    {
+      "id": "a87b",
+      "title": "erez"
+    }
+  ]
+}
