@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import './App.css';
-
+import TodoList from './components/TodoList';
+import TodoStatistics from './components/TodoStatistics';
+import AddTodoForm from './components/AddTodoForm';
 
 function makeId(length) {
   let result = "";
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   const charactersLength = characters.length;
   for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -26,11 +27,8 @@ const data = [
   { id: '10', title: 'Deploy to Production', isComplete: true },
 ];
 
-const emptyData = []; // for test in case data is empty 
-
 function App() {
   const [todos, setTodos] = useState(data);
-  const [newTodoTitle, setNewTodoTitle] = useState("");
 
   function removeTodo(todoId) {
     const newTodos = todos.filter((todo) => todo.id !== todoId);
@@ -44,12 +42,10 @@ function App() {
     setTodos(checkedTodos);
   }
 
-  function addTodo(ev) {
-    ev.preventDefault();
-
+  function addTodo(title) {
     const newTodo = {
-      id: makeId(),
-      title: newTodoTitle,
+      id: makeId(10),
+      title: title,
       isComplete: false,
     };
 
@@ -62,60 +58,33 @@ function App() {
   function countCompletedTodos() {
     return todos.filter((todo) => todo.isComplete).length;
   }
- 
+
   function countUncompletedTodos() {
     return todos.filter((todo) => !todo.isComplete).length;
   }
 
   function calculateCompletionPercentage() {
-    return (countCompletedTodos() / todos.length) * 100; // fix divide by 0
+    if (todos.length === 0) {
+      return 0;
+    }
+    return (countCompletedTodos() / todos.length) * 100;
   }
 
   return (
-    <>
-      <div className="main-container">
-        <h1>Cat App</h1>
-        <h2>Completed Todos: {countCompletedTodos()}</h2>
-        <h2>Uncompleted Todos: {countUncompletedTodos()}</h2>
-        <div className='progress-bar'>
-          <div
-            className='progress-bar-fill'
-            style={{ width: `${calculateCompletionPercentage()}%` }}
-          ></div>
-        </div>
-        <form onSubmit={addTodo}>
-          <input
-            type="text"
-            value={newTodoTitle}
-            onChange={(ev) => setNewTodoTitle(ev.target.value)}
-          />
-          <button className='add-btn'>Add</button>
-        </form>
-        <div className='container'>
-          {todos.length === 0 ? (
-            <p>No todos available</p>
-          ) : (
-            <ul>
-              {todos.map((todo) => (
-                <li key={todo.id} className="">
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={todo.isComplete}
-                      onChange={() => toggleComplete(todo.id)}
-                    />
-                    <span>{todo.title}</span>
-                  </label>
-                  <button onClick={() => removeTodo(todo.id)}>Delete Todo</button>
-                </li>
-              ))}
-            </ul>
-          )}
-          <h1>Total number of todos:{todos.length}</h1>
-        </div>
-      </div>
-      
-    </>
+    <div className="main-container">
+      <h1>Cat App</h1>
+      <TodoStatistics
+        completedTodos={countCompletedTodos()}
+        uncompletedTodos={countUncompletedTodos()}
+        completionPercentage={calculateCompletionPercentage()}
+      />
+      <AddTodoForm addTodo={addTodo} />
+      <TodoList
+        todos={todos}
+        toggleComplete={toggleComplete}
+        removeTodo={removeTodo}
+      />
+    </div>
   );
 }
 
