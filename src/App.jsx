@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import TodoList from './components/TodoList';
 import TodoStatistics from './components/TodoStatistics';
@@ -69,7 +69,15 @@ function App() {
     }
     return (countCompletedTodos() / todos.length) * 100;
   }
+  useEffect(() => {
+    
+    const greetUser = () => {
+      console.log('Welcome to the app!');
+    };
 
+    greetUser();
+  }, []); 
+  
   return (
     <div className="main-container">
       <h1>Cat App</h1>
