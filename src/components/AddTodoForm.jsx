@@ -1,50 +1,43 @@
 import axios from 'axios';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 function AddTodoForm({ addTodo }) {
-  // const [newTodoTitle, setNewTodoTitle] = useState("");
-  const todoTitle = useRef(null)
+  const [newTodoTitle, setNewTodoTitle] = useState("");
   const inputRef = useRef(null);
 
-
-  // function handleSubmit(ev) { // using UserState!
-  //   ev.preventDefault();
-  //   addTodo(newTodoTitle);
-  //   setNewTodoTitle(""); // clear input field after adding
-  //   inputRef.current.focus(); // focus the input element
-  // }
-
-
-
+  useEffect(() => {
+    // Focus on the input field when the component first renders
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   async function handleSubmit(ev) {
     ev.preventDefault();
-    const newTodoTitle = todoTitle.current.value;
     if (!newTodoTitle) {
       return;
     }
 
     try {
-      await axios.post('http://localhost:8001/todos', { title: newTodoTitle });
+      await axios.post('http://localhost:8001/todos', { title: newTodoTitle, isComplete: false });
       addTodo(newTodoTitle);
-      todoTitle.current.value = ''; // clear input field after adding
+      setNewTodoTitle(""); // Clear input field after adding
       if (inputRef.current) {
-        inputRef.current.focus(); // focus the input element if it's available
+        inputRef.current.focus(); // Focus the input element if it's available
       }
     } catch (error) {
       console.error('Error adding todo:', error);
     }
   }
-  
-  return (
 
+  return (
     <form onSubmit={handleSubmit}>
       <input
         type="text"
-        // value={newTodoTitle}
-        // onChange={(ev) => setNewTodoTitle(ev.target.value)}
-        ref={todoTitle} // ref input element
-        
+        value={newTodoTitle}
+        onChange={(ev) => setNewTodoTitle(ev.target.value)}
+        ref={inputRef} // Ref for the input element to handle focus
+        placeholder="Enter todo"
       />
       <button className='add-btn'>Add</button>
     </form>

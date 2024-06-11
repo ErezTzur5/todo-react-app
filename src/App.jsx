@@ -1,28 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import Filter from './components/filter';
 import './App.css';
 import TodoList from './components/TodoList';
 import TodoStatistics from './components/TodoStatistics';
 import AddTodoForm from './components/AddTodoForm';
 import axios from 'axios';
 
-function makeId(length) {
-  let result = "";
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
-
 function App() {
   const [todos, setTodos] = useState([]);
+  const [filteredTodos, setFilteredTodos] = useState([]);
 
   useEffect(() => {
     axios.get('http://localhost:8001/todos')
       .then(response => {
         setTodos(response.data);
-        
+        setFilteredTodos(response.data);
       })
       .catch(error => {
         console.error('Error fetching data: ', error);
@@ -32,39 +24,43 @@ function App() {
   async function removeTodo(todoId) {
     try {
       await axios.delete(`http://localhost:8001/todos/${todoId}`);
-  
       const newTodos = todos.filter((todo) => todo.id !== todoId);
       setTodos(newTodos);
-      console.log('after remove: ', newTodos);
+      setFilteredTodos(newTodos);
     } catch (error) {
       console.error('Error deleting todo:', error);
     }
   }
 
   async function toggleComplete(todoId) {
-    try{
+    try {
+      const todo = todos.find((todo) => todo.id === todoId);
+      const updatedTodo = { ...todo, isComplete: !todo.isComplete };
 
-      const checkedTodos = todos.map((todo) =>
-        todo.id === todoId ? { ...todo, isComplete: !todo.isComplete } : todo
+      await axios.put(`http://localhost:8001/todos/${todoId}`, updatedTodo);
+      const updatedTodos = todos.map((todo) =>
+        todo.id === todoId ? updatedTodo : todo
       );
-      await axios.put(`http://localhost:8001/todos/${todoId}`, checkedTodos);
-      setTodos(checkedTodos);
-    } catch (error){
+      setTodos(updatedTodos);
+      setFilteredTodos(updatedTodos); s
+    } catch (error) {
       console.log("Error updating todo", error);
     }
   }
 
-  function addTodo(title) {
-    const newTodo = {
-      id: makeId(10),
-      title: title,
-      isComplete: false,
-    };
-
-    const newTodos = [...todos];
-    newTodos.push(newTodo);
-    console.log('after add: ',newTodos);
-    setTodos(newTodos);
+  async function addTodo(title) {
+    try {
+      const response = await axios.post('http://localhost:8001/todos', {
+        title: title,
+        isComplete: false,
+      });
+      const newTodo = response.data;
+      const newTodos = [...todos, newTodo];
+      setTodos(newTodos);
+      setFilteredTodos(newTodos);
+    } catch (error) {
+      console.error('Error adding todo:', error);
+    }
   }
 
   function countCompletedTodos() {
@@ -84,7 +80,17 @@ function App() {
 
   return (
     <div className="main-container">
-      <h1>Cat App</h1>
+      <h1>TODO App</h1>
+      <div>
+        <Filter todos={todos} setFilteredTodos={setFilteredTodos} />
+        <ul>
+          {filteredTodos.map(todo => (
+            <li key={todo.id}>
+              {todo.title} - {todo.isComplete ? 'Completed' : 'Pending'}
+            </li>
+          ))}
+        </ul>
+      </div>
       <TodoStatistics
         completedTodos={countCompletedTodos()}
         uncompletedTodos={countUncompletedTodos()}
