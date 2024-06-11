@@ -50,11 +50,7 @@ function App() {
 
   async function addTodo(title) {
     try {
-      const response = await axios.post('http://localhost:8001/todos', {
-        title: title,
-        isComplete: false,
-      });
-      const newTodo = response.data;
+      const newTodo = { title: title, isComplete: false };
       const newTodos = [...todos, newTodo];
       setTodos(newTodos);
       setFilteredTodos(newTodos);
