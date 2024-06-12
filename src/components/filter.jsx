@@ -29,12 +29,14 @@ const Filter = ({ todos, setFilteredTodos }) => {
     return (
         <div>
             <input
+                className='filter-input'
                 type="text"
                 placeholder="Filter by title"
                 value={filterTitle}
                 onChange={e => setFilterTitle(e.target.value)}
             />
             <select
+                className='select-filter'
                 value={filterStatus}
                 onChange={e => setFilterStatus(e.target.value)}
             >

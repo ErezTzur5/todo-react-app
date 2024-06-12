@@ -31,16 +31,19 @@ function AddTodoForm({ addTodo }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={newTodoTitle}
-        onChange={(ev) => setNewTodoTitle(ev.target.value)}
-        ref={inputRef} // Ref for the input element to handle focus
-        placeholder="Enter todo"
-      />
-      <button className='add-btn'>Add</button>
-    </form>
+    <div className="form-todo">
+      <form onSubmit={handleSubmit}>
+        <input
+          className='todo-input'
+          type="text"
+          value={newTodoTitle}
+          onChange={(ev) => setNewTodoTitle(ev.target.value)}
+          ref={inputRef} // Ref for the input element to handle focus
+          placeholder="Enter todo"
+        />
+        <button className='add-btn'>Add</button>
+      </form>
+    </div>
   );
 }
 

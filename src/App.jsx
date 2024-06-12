@@ -42,7 +42,7 @@ function App() {
         todo.id === todoId ? updatedTodo : todo
       );
       setTodos(updatedTodos);
-      setFilteredTodos(updatedTodos); s
+      setFilteredTodos(updatedTodos);
     } catch (error) {
       console.log("Error updating todo", error);
     }
@@ -77,9 +77,20 @@ function App() {
   return (
     <div className="main-container">
       <h1>TODO App</h1>
-      <div>
+      <AddTodoForm addTodo={addTodo} />
+      <TodoList
+        todos={todos}
+        toggleComplete={toggleComplete}
+        removeTodo={removeTodo}
+      />
+      <TodoStatistics
+        completedTodos={countCompletedTodos()}
+        uncompletedTodos={countUncompletedTodos()}
+        completionPercentage={calculateCompletionPercentage()}
+      />
+      <div className='filter-todos'>
         <Filter todos={todos} setFilteredTodos={setFilteredTodos} />
-        <ul>
+        <ul className='ul-filter' >
           {filteredTodos.map(todo => (
             <li key={todo.id}>
               {todo.title} - {todo.isComplete ? 'Completed' : 'Pending'}
@@ -87,17 +98,8 @@ function App() {
           ))}
         </ul>
       </div>
-      <TodoStatistics
-        completedTodos={countCompletedTodos()}
-        uncompletedTodos={countUncompletedTodos()}
-        completionPercentage={calculateCompletionPercentage()}
-      />
-      <AddTodoForm addTodo={addTodo} />
-      <TodoList
-        todos={todos}
-        toggleComplete={toggleComplete}
-        removeTodo={removeTodo}
-      />
+
+
     </div>
   );
 }
