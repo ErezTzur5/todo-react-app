@@ -27,7 +27,7 @@ const Filter = ({ todos, setFilteredTodos }) => {
     }, [filterTitle, filterStatus, todos]);
 
     return (
-        <div>
+        <div className='filter-container' >
             <input
                 className='filter-input'
                 type="text"

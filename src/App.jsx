@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Filter from './components/filter';
-import './App.css';
+import './index.css';
 import TodoList from './components/TodoList';
 import TodoStatistics from './components/TodoStatistics';
 import AddTodoForm from './components/AddTodoForm';
