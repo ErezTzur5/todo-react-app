@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Filter from './components/filter';
+import { TodoFilter } from './components/filter';
 import './index.css';
 import TodoList from './components/TodoList';
 import TodoStatistics from './components/TodoStatistics';
@@ -8,13 +8,12 @@ import axios from 'axios';
 
 function App() {
   const [todos, setTodos] = useState([]);
-  const [filteredTodos, setFilteredTodos] = useState([]);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     axios.get('http://localhost:8001/todos')
       .then(response => {
         setTodos(response.data);
-        setFilteredTodos(response.data);
       })
       .catch(error => {
         console.error('Error fetching data: ', error);
@@ -26,7 +25,6 @@ function App() {
       await axios.delete(`http://localhost:8001/todos/${todoId}`);
       const newTodos = todos.filter((todo) => todo.id !== todoId);
       setTodos(newTodos);
-      setFilteredTodos(newTodos);
     } catch (error) {
       console.error('Error deleting todo:', error);
     }
@@ -42,7 +40,6 @@ function App() {
         todo.id === todoId ? updatedTodo : todo
       );
       setTodos(updatedTodos);
-      setFilteredTodos(updatedTodos);
     } catch (error) {
       console.log("Error updating todo", error);
     }
@@ -51,9 +48,8 @@ function App() {
   async function addTodo(title) {
     try {
       const newTodo = { title: title, isComplete: false };
-      const newTodos = [...todos, newTodo];
-      setTodos(newTodos);
-      setFilteredTodos(newTodos);
+      const response = await axios.post('http://localhost:8001/todos', newTodo);
+      setTodos([...todos, response.data]);  // Assuming response.data contains the new todo with its ID
     } catch (error) {
       console.error('Error adding todo:', error);
     }
@@ -74,31 +70,29 @@ function App() {
     return (countCompletedTodos() / todos.length) * 100;
   }
 
+  const filteredTodos = todos.filter(todo =>
+    todo.title.toLowerCase().includes(query.toLowerCase())
+  );
+
   return (
     <div className="main-container">
       <h1>TODO App</h1>
       <AddTodoForm addTodo={addTodo} />
-      <TodoList
-        todos={todos}
-        toggleComplete={toggleComplete}
-        removeTodo={removeTodo}
-      />
-      <TodoStatistics
-        completedTodos={countCompletedTodos()}
-        uncompletedTodos={countUncompletedTodos()}
-        completionPercentage={calculateCompletionPercentage()}
-      />
-      <div className='filter-todos'>
-        <Filter todos={todos} setFilteredTodos={setFilteredTodos} />
-        <ul className='ul-filter' >
-          {filteredTodos.map(todo => (
-            <li key={todo.id}>
-              {todo.title} - {todo.isComplete ? 'Completed' : 'Pending'}
-            </li>
-          ))}
-        </ul>
-      </div>
 
+      <TodoFilter query={query} setQuery={setQuery} />
+
+      <div className="todo-list-statistics-container">
+        <TodoList
+          todos={filteredTodos}
+          toggleComplete={toggleComplete}
+          removeTodo={removeTodo}
+        />
+        <TodoStatistics
+          completedTodos={countCompletedTodos()}
+          uncompletedTodos={countUncompletedTodos()}
+          completionPercentage={calculateCompletionPercentage()}
+        />
+      </div>
 
     </div>
   );
