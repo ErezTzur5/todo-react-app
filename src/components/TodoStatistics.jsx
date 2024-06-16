@@ -1,18 +1,19 @@
 import React from 'react';
+import { Typography, LinearProgress, Box } from '@mui/material';
 
 function TodoStatistics({ completedTodos, uncompletedTodos, completionPercentage }) {
   return (
-    <div className="todo-statistics">
-      <h2>Completed Todos: {completedTodos}</h2>
-      <h2>Uncompleted Todos: {uncompletedTodos}</h2>
-      <div className='progress-bar'>
-        <div
-          className='progress-bar-fill'
-          style={{ width: `${completionPercentage}%` }}
-        ></div>
-      </div>
-    </div>
+    <Box className="todo-statistics" p={2}>
+      <Typography variant="h6">Completed Todos: {completedTodos}</Typography>
+      <Typography variant="h6">Uncompleted Todos: {uncompletedTodos}</Typography>
+      <LinearProgress
+        variant="determinate"
+        value={completionPercentage}
+        style={{ height: '10px', borderRadius: '5px' }}
+      />
+    </Box>
   );
 }
 
 export default TodoStatistics;
+

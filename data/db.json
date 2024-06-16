@@ -1,39 +1,79 @@
 {
   "todos": [
     {
-      "id": "2",
-      "title": "Write Unit Tests",
-      "isComplete": true
-    },
-    {
       "id": "3",
       "title": "Implement Context",
-      "isComplete": true
+      "isComplete": true,
+      "labels": [
+        "home",
+        "shopping"
+      ]
     },
     {
       "id": "4",
       "title": "Create Portfolio Website",
-      "isComplete": true
+      "isComplete": false,
+      "labels": [
+        "home",
+        "shopping"
+      ]
     },
     {
       "id": "5",
       "title": "Learn TypeScript",
-      "isComplete": true
+      "isComplete": false,
+      "labels": [
+        "home",
+        "shopping"
+      ]
     },
     {
       "id": "6",
       "title": "Refactor Codebase",
-      "isComplete": true
+      "isComplete": true,
+      "labels": [
+        "home",
+        "shopping"
+      ]
     },
     {
       "id": "7",
       "title": "Optimize Performance",
-      "isComplete": true
+      "isComplete": true,
+      "labels": [
+        "home",
+        "shopping"
+      ]
     },
     {
-      "id": "8",
-      "title": "Deploy to Production",
-      "isComplete": true
+      "id": "5fa0",
+      "title": {
+        "title": "erez",
+        "labels": [
+          ""
+        ]
+      },
+      "isComplete": false
+    },
+    {
+      "id": "bd22",
+      "title": {
+        "title": "erez",
+        "labels": [
+          ""
+        ]
+      },
+      "isComplete": false
+    },
+    {
+      "id": "09cf",
+      "title": {
+        "title": "erez",
+        "labels": [
+          "ee"
+        ]
+      },
+      "isComplete": false
     }
   ]
 }

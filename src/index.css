@@ -6,7 +6,7 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  background-color: #ebebeb;
   margin: 0;
   padding: 0;
 }
@@ -15,7 +15,11 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
 
+.MuiButton-startIcon {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
 }
 
 .todos-container {
@@ -177,7 +181,7 @@ ul li button:focus {
   padding: 1.5rem;
 }
 
-.filter-container{
+.filter-container {
   display: flex;
 }
 
@@ -266,11 +270,10 @@ input[type="checkbox"]:checked::after {
   font-size: 12px;
 }
 
-
-span {
-  margin-left: 10px;
+.statistics-filter-container {
+  display: flex;
+  gap: 27rem;
 }
-
 
 .total-todos {
   font-size: 20px;
@@ -280,10 +283,11 @@ span {
   align-self: center;
 }
 
-.search-input-div{
-padding-top: 1rem;}
+.search-input-div {
+  padding-top: 1rem;
+}
 
-.search-input{
+.search-input {
   background-image: url('./assets/searchicon.png');
   background-position: 10px 12px;
   background-repeat: no-repeat;
@@ -296,7 +300,7 @@ padding-top: 1rem;}
 
 }
 
-.todo-statistics{
+.todo-statistics {
   margin-left: 2rem;
   width: 20rem;
 }

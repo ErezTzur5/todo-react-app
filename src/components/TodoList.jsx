@@ -1,4 +1,5 @@
 import React from 'react';
+import { Typography, List, ListItem, ListItemText, Skeleton } from '@mui/material';
 import TodoItem from './TodoItem';
 
 function TodoList({ todos, toggleComplete, removeTodo }) {
@@ -6,9 +7,9 @@ function TodoList({ todos, toggleComplete, removeTodo }) {
     <div className="todos-container">
       <div className='items-container'>
         {todos.length === 0 ? (
-          <p>No todos available</p>
+          <Typography variant="body1">No todos available</Typography>
         ) : (
-          <ul>
+          <List>
             {todos.map((todo) => (
               <TodoItem
                 key={todo.id}
@@ -17,9 +18,15 @@ function TodoList({ todos, toggleComplete, removeTodo }) {
                 removeTodo={removeTodo}
               />
             ))}
-          </ul>
+          </List>
         )}
-        <p className='total-todos' >Total number of todos: {todos.length}</p>
+        {todos.length === 0 && (
+          <React.Fragment>
+            <Skeleton variant="text" width={200} height={40} />
+            <Skeleton variant="rectangular" width={'100%'} height={400} />
+          </React.Fragment>
+        )}
+        <Typography variant="body1" className='total-todos'>Total number of todos: {todos.length}</Typography>
       </div>
     </div>
   );

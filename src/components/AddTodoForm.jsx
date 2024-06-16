@@ -1,5 +1,9 @@
-import axios from 'axios';
 import React, { useState, useRef, useEffect } from 'react';
+import { Button, TextField } from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
+import axios from 'axios';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+
 
 function AddTodoForm({ addTodo }) {
   const [newTodoTitle, setNewTodoTitle] = useState("");
@@ -12,36 +16,32 @@ function AddTodoForm({ addTodo }) {
     }
   }, []);
 
-  async function handleSubmit(ev) {
+  function handleSubmit(ev) {
     ev.preventDefault();
     if (!newTodoTitle) {
       return;
     }
-
-    try {
-      await axios.post('http://localhost:8001/todos', { title: newTodoTitle, isComplete: false });
-      addTodo(newTodoTitle);
-      setNewTodoTitle(""); // Clear input field after adding
-      if (inputRef.current) {
-        inputRef.current.focus(); // Focus the input element if it's available
-      }
-    } catch (error) {
-      console.error('Error adding todo:', error);
+    addTodo(newTodoTitle);
+    setNewTodoTitle(""); // Clear input field after adding
+    if (inputRef.current) {
+      inputRef.current.focus(); // Focus the input element if it's available
     }
+
   }
+
 
   return (
     <div className="form-todo">
       <form onSubmit={handleSubmit}>
-        <input
-          className='todo-input'
-          type="text"
+        <TextField
+          label="Enter todo"
           value={newTodoTitle}
           onChange={(ev) => setNewTodoTitle(ev.target.value)}
-          ref={inputRef} // Ref for the input element to handle focus
-          placeholder="Enter todo"
+          inputRef={inputRef} // Ref for the input element to handle focus
+          variant="outlined"
+          fullWidth
         />
-        <button className='add-btn'>Add</button>
+        <Tooltip title={"Add TODO"} ><Button startIcon={<AddCircleIcon />} sx={{ marginTop: '10px' }} variant="contained" color="primary" type="submit"></Button></Tooltip>
       </form>
     </div>
   );

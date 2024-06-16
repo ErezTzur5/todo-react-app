@@ -5,10 +5,16 @@ import TodoList from './components/TodoList';
 import TodoStatistics from './components/TodoStatistics';
 import AddTodoForm from './components/AddTodoForm';
 import axios from 'axios';
+import { Typography, Snackbar, Alert } from '@mui/material';
+import Navbar from './components/NavBar';
+
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [query, setQuery] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
   useEffect(() => {
     axios.get('http://localhost:8001/todos')
@@ -25,8 +31,14 @@ function App() {
       await axios.delete(`http://localhost:8001/todos/${todoId}`);
       const newTodos = todos.filter((todo) => todo.id !== todoId);
       setTodos(newTodos);
+      setSnackbarMessage('🗑️ Todo deleted successfully');
+      setSnackbarSeverity('none');
     } catch (error) {
       console.error('Error deleting todo:', error);
+      setSnackbarMessage('Error deleting todo');
+      setSnackbarSeverity('error');
+    } finally {
+      setSnackbarOpen(true);
     }
   }
 
@@ -40,8 +52,14 @@ function App() {
         todo.id === todoId ? updatedTodo : todo
       );
       setTodos(updatedTodos);
+      setSnackbarMessage('Todo updated successfully');
+      setSnackbarSeverity('success');
     } catch (error) {
-      console.log("Error updating todo", error);
+      console.error('Error updating todo:', error);
+      setSnackbarMessage('Error updating todo');
+      setSnackbarSeverity('error');
+    } finally {
+      setSnackbarOpen(true);
     }
   }
 
@@ -50,8 +68,14 @@ function App() {
       const newTodo = { title: title, isComplete: false };
       const response = await axios.post('http://localhost:8001/todos', newTodo);
       setTodos([...todos, response.data]);  // Assuming response.data contains the new todo with its ID
+      setSnackbarMessage('Todo added successfully');
+      setSnackbarSeverity('info');
     } catch (error) {
       console.error('Error adding todo:', error);
+      setSnackbarMessage('Error adding todo');
+      setSnackbarSeverity('error');
+    } finally {
+      setSnackbarOpen(true);
     }
   }
 
@@ -71,22 +95,19 @@ function App() {
   }
 
   const filteredTodos = todos.filter(todo =>
-    todo.title.toLowerCase().includes(query.toLowerCase())
+    typeof todo.title === 'string' && todo.title.toLowerCase().includes(query.toLowerCase())
   );
+
 
   return (
     <div className="main-container">
-      <h1>TODO App</h1>
+      <Navbar />
+      <Typography variant="h3" margin={'10px'}>TODO App</Typography>
+
       <AddTodoForm addTodo={addTodo} />
 
-      <TodoFilter query={query} setQuery={setQuery} />
-
-      <div className="todo-list-statistics-container">
-        <TodoList
-          todos={filteredTodos}
-          toggleComplete={toggleComplete}
-          removeTodo={removeTodo}
-        />
+      <div className="statistics-filter-container">
+        <TodoFilter query={query} setQuery={setQuery} />
         <TodoStatistics
           completedTodos={countCompletedTodos()}
           uncompletedTodos={countUncompletedTodos()}
@@ -94,6 +115,24 @@ function App() {
         />
       </div>
 
+      <div className="todo-list-statistics-container">
+        <TodoList
+          todos={filteredTodos}
+          toggleComplete={toggleComplete}
+          removeTodo={removeTodo}
+        />
+
+      </div>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+      >
+        <Alert onClose={() => setSnackbarOpen(false)} severity={snackbarSeverity}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
