@@ -44,36 +44,6 @@
         "home",
         "shopping"
       ]
-    },
-    {
-      "id": "5fa0",
-      "title": {
-        "title": "erez",
-        "labels": [
-          ""
-        ]
-      },
-      "isComplete": false
-    },
-    {
-      "id": "bd22",
-      "title": {
-        "title": "erez",
-        "labels": [
-          ""
-        ]
-      },
-      "isComplete": false
-    },
-    {
-      "id": "09cf",
-      "title": {
-        "title": "erez",
-        "labels": [
-          "ee"
-        ]
-      },
-      "isComplete": false
     }
   ]
 }
