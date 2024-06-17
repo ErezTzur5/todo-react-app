@@ -10,6 +10,7 @@ import TodoDetailsPage from './components/pages/TodoDetailsPage';
 import CreateTodoPage from './components/pages/CreateTodoPage';
 import NotFoundPage from './components/pages/NotFoundPage';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import Sidebar from './components/SideBar';
 
 
 
@@ -46,6 +47,7 @@ function App() {
   return (
     <div className="main-container">
       <Router>
+        <Sidebar/>
             <Navbar />
             <Routes>
                 <Route path="/" element={<HomePage />} />

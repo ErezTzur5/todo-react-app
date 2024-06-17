@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, Snackbar, Alert } from '@mui/material';
 import axios from 'axios';
-import { Typography, Snackbar, Alert } from '@mui/material';
-
+import { useNavigate } from 'react-router-dom';
 
 function CreateTodoPage() {
   const [title, setTitle] = useState('');
@@ -10,14 +9,16 @@ function CreateTodoPage() {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
-  async function addTodo(title) {
+  const navigate = useNavigate();
+
+  async function addTodo() {
     try {
       const newTodo = { title: title, isComplete: false };
-      const response = await axios.post('http://localhost:8001/todos', newTodo);
+      await axios.post('http://localhost:8001/todos', newTodo);
       setSnackbarMessage('Todo added successfully');
       setSnackbarSeverity('info');
       setSnackbarOpen(true);
-      // You might want to update the UI with the new todo here
+      navigate('/todo-page'); // Navigate back to the todo list
     } catch (error) {
       console.error('Error adding todo:', error);
       setSnackbarMessage('Error adding todo');
@@ -32,7 +33,7 @@ function CreateTodoPage() {
       alert('Please enter a todo title');
       return;
     }
-    addTodo(title);
+    addTodo();
     setTitle('');
   }
 

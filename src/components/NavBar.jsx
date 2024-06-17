@@ -15,9 +15,6 @@ function Navbar() {
                 <Button color="inherit" component={Link} to="/todo-page">
                     Todo Page
                 </Button>
-                <Button color="inherit" component={Link} to="/create-todo">
-                    Create Todo
-                </Button>
                 <Button color="inherit" component={Link} to="/activity">
                     Activity
                 </Button>
