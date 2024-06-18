@@ -40,7 +40,7 @@ function App() {
           <Route path="/todo-page" element={<TodoPage />} >
             <Route path="create" element={<CreateTodoPage />} />
           </Route>
-          <Route path="/todo/:id" element={<TodoDetailsPage />} />
+          <Route path="/todo-page/:id" element={<TodoDetailsPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>

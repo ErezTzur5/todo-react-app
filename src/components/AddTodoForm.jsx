@@ -5,15 +5,15 @@ import { useNavigate } from 'react-router-dom';
 
 function AddTodoForm({ }) {
   const [title, setTitle] = useState('');
+  const [labels, setLabels] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   const navigate = useNavigate();
 
-
   async function addTodo() {
     try {
-      const newTodo = { title: title, isComplete: false };
+      const newTodo = { title: title, isComplete: false, labels: labels.split(',').map(label => label.trim()) };
       const response = await axios.post('http://localhost:8001/todos', newTodo);
 
       setSnackbarMessage('Todo added successfully');
@@ -37,16 +37,24 @@ function AddTodoForm({ }) {
     }
     addTodo();
     setTitle('');
+    setLabels('');
   }
 
   return (
     <div className="create-todo-page">
-      <h1>Create Todo</h1>
       <form onSubmit={handleSubmit}>
         <TextField
           label="Todo Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          variant="outlined"
+          margin="normal"
+          fullWidth
+        />
+        <TextField
+          label="Labels (comma-separated)"
+          value={labels}
+          onChange={(e) => setLabels(e.target.value)}
           variant="outlined"
           margin="normal"
           fullWidth

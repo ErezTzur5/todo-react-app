@@ -71,7 +71,6 @@ function TodoPage({ addTodoToState }) {
     <>
       <div className="todo-page">
         <h1>Todo List</h1>
-        <Typography variant="h3" margin={'10px'}>TODO App</Typography>
         <div className="statistics-filter-container">
           <TodoList
             todos={filteredTodos}
