@@ -1,48 +1,74 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Button, TextField } from '@mui/material';
-import Tooltip from '@mui/material/Tooltip';
+import React, { useState } from 'react';
+import { Button, TextField, Snackbar, Alert } from '@mui/material';
 import axios from 'axios';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { useNavigate } from 'react-router-dom';
+
+function AddTodoForm({ }) {
+  const [title, setTitle] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  const navigate = useNavigate();
 
 
-function AddTodoForm({ addTodo }) {
-  const [newTodoTitle, setNewTodoTitle] = useState("");
-  const inputRef = useRef(null);
+  async function addTodo() {
+    try {
+      const newTodo = { title: title, isComplete: false };
+      const response = await axios.post('http://localhost:8001/todos', newTodo);
 
-  useEffect(() => {
-    // Focus on the input field when the component first renders
-    if (inputRef.current) {
-      inputRef.current.focus();
+      setSnackbarMessage('Todo added successfully');
+      setSnackbarSeverity('info');
+      setSnackbarOpen(true);
+      navigate("/todo-page")
+
+    } catch (error) {
+      console.error('Error adding todo:', error);
+      setSnackbarMessage('Error adding todo');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
     }
-  }, []);
-
-  function handleSubmit(ev) {
-    ev.preventDefault();
-    if (!newTodoTitle) {
-      return;
-    }
-    addTodo(newTodoTitle);
-    setNewTodoTitle(""); // Clear input field after adding
-    if (inputRef.current) {
-      inputRef.current.focus(); // Focus the input element if it's available
-    }
-
   }
 
+  function handleSubmit(event) {
+    event.preventDefault();
+    if (title.trim() === '') {
+      alert('Please enter a todo title');
+      return;
+    }
+    addTodo();
+    setTitle('');
+  }
 
   return (
-    <div className="form-todo">
+    <div className="create-todo-page">
+      <h1>Create Todo</h1>
       <form onSubmit={handleSubmit}>
         <TextField
-          label="Enter todo"
-          value={newTodoTitle}
-          onChange={(ev) => setNewTodoTitle(ev.target.value)}
-          inputRef={inputRef} // Ref for the input element to handle focus
+          label="Todo Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
           variant="outlined"
+          margin="normal"
           fullWidth
         />
-        <Tooltip title={"Add TODO"} ><Button startIcon={<AddCircleIcon />} sx={{ marginTop: '10px' }} variant="contained" color="primary" type="submit"></Button></Tooltip>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+        >
+          Add Todo
+        </Button>
       </form>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+      >
+        <Alert onClose={() => setSnackbarOpen(false)} severity={snackbarSeverity}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

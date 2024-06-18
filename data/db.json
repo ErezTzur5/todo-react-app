@@ -3,7 +3,7 @@
     {
       "id": "3",
       "title": "Implement Context",
-      "isComplete": false,
+      "isComplete": true,
       "labels": [
         "home",
         "shopping"
@@ -12,7 +12,7 @@
     {
       "id": "4",
       "title": "Create Portfolio Website",
-      "isComplete": false,
+      "isComplete": true,
       "labels": [
         "home",
         "shopping"
@@ -21,7 +21,7 @@
     {
       "id": "5",
       "title": "Learn TypeScript",
-      "isComplete": false,
+      "isComplete": true,
       "labels": [
         "home",
         "shopping"
@@ -37,17 +37,12 @@
       ]
     },
     {
-      "id": "7",
-      "title": "Optimize Performance",
-      "isComplete": true,
-      "labels": [
-        "home",
-        "shopping"
-      ]
-    },
-    {
-      "id": "76b8",
-      "title": "erez",
+      "id": "9ee2",
+      "title": {
+        "id": "dbd7",
+        "title": "erez",
+        "isComplete": false
+      },
       "isComplete": false
     }
   ]
