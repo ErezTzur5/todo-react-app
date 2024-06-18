@@ -22,6 +22,11 @@ body {
   margin-left: 0 !important;
 }
 
+.todo-detail-container {
+  display: flex;
+  align-items: center;
+}
+
 .todos-container {
   margin: 20px;
   background-color: #fff;

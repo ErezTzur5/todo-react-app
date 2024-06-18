@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { IconButton, TextField, Typography, Button, Card, CardContent, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Tooltip from '@mui/material/Tooltip';
+import EditIcon from '@mui/icons-material/Edit';
 
 function TodoDetailsPage() {
   const navigate = useNavigate();
@@ -45,42 +49,51 @@ function TodoDetailsPage() {
     }
   };
 
-
   if (!todo) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div>
-      <h1>TodoDetailPage</h1>
-      {editMode ? (
-        <div>
-          <span>Title:</span>
-          <input
-            type="text"
-            value={newTitle}
-            onChange={(e) => setNewTitle(e.target.value)}
-          />
-          <span>Labels:</span>
-          <input
-            type="text"
-            value={newLabels}
-            onChange={(e) => setNewLabels(e.target.value)}
-          />
-          <button onClick={handleEdit}>Save</button>
-        </div>
-      ) : (
-        <div>
-          <p>Todo Title: {todo.title}</p>
-          <p>Labels: {todo.labels.join(', ')}</p>
-          <button onClick={() => setEditMode(true)}>Edit Title/Labels</button>
-          <button onClick={handleDelete}>Delete</button>
-        </div>
-      )}
-      <p>Showing details for todo with id: {id}</p>
-
-    </div>
-
+    <Card sx={{ marginTop: '20px' }}>
+      <CardContent>
+        <Typography variant="h5">Todo Detail</Typography>
+        <TableContainer>
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell>
+                  <Typography>Todo Title: {todo.title}</Typography>
+                  <Typography>Labels: {todo.labels.join(', ')}</Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Tooltip title="Edit">
+                    <IconButton onClick={() => setEditMode(true)}><EditIcon /></IconButton>
+                  </Tooltip>
+                  <Tooltip title="Delete">
+                    <IconButton onClick={handleDelete}><DeleteIcon /></IconButton>
+                  </Tooltip>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+        {editMode && (
+          <div>
+            <TextField
+              label="Title"
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+            />
+            <TextField
+              label="Labels"
+              value={newLabels}
+              onChange={(e) => setNewLabels(e.target.value)}
+            />
+            <Button onClick={handleEdit}>Save</Button>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }
 

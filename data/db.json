@@ -1,15 +1,6 @@
 {
   "todos": [
     {
-      "title": "Implement Context",
-      "labels": [
-        "home",
-        "shopping"
-      ],
-      "isComplete": true,
-      "id": "3"
-    },
-    {
       "id": "4",
       "title": "Create Portfolio Website",
       "isComplete": true,
@@ -35,6 +26,14 @@
         "home",
         "shopping"
       ]
+    },
+    {
+      "title": "erez",
+      "labels": [
+        "tzur"
+      ],
+      "isComplete": true,
+      "id": "8dd2"
     }
   ]
 }
